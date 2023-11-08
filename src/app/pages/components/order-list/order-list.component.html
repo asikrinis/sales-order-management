@@ -1,0 +1,58 @@
+<div class="order-list-container" *ngIf="true">
+  <mat-form-field>
+    <mat-label>Fecha de Creación Desde</mat-label>
+    <input matInput
+           [matDatepicker]="picker1"
+           [(ngModel)]="form.initialDate"
+           (dateChange)="applyDateFilter()"
+           [max]="form.finalDate || maxDate">
+    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+    <mat-datepicker #picker1></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Fecha de Creación Hasta</mat-label>
+    <input matInput
+           [matDatepicker]="picker2"
+           [(ngModel)]="form.finalDate"
+           (dateChange)="applyDateFilter()"
+           [max]="maxDate"
+           [min]="form.initialDate">
+    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+    <mat-datepicker #picker2></mat-datepicker>
+  </mat-form-field>
+
+
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef> ID </th>
+      <td mat-cell *matCellDef="let order"> {{ order.orderId }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="clientName">
+      <th mat-header-cell *matHeaderCellDef> Nombre Cliente </th>
+      <td mat-cell *matCellDef="let order"> {{ order.clientName }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="creationDate">
+      <th mat-header-cell *matHeaderCellDef> Fecha Creación </th>
+      <td mat-cell *matCellDef="let order"> {{ order.creationDate | date }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="total">
+      <th mat-header-cell *matHeaderCellDef> Total </th>
+      <td mat-cell *matCellDef="let order"> {{ order.total }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> Acciones </th>
+      <td mat-cell *matCellDef="let order">
+        <button mat-button (click)="editOrder(order)">Editar</button>
+        <button mat-button color="warn" (click)="deleteOrder(order)">Borrar</button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>

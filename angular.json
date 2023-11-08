@@ -30,7 +30,9 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "@angular/material/prebuilt-themes/indigo-pink.css",
+              "src/styles.scss",
+              "src/assets/css/bootstrap.min.css"
             ],
             "scripts": []
           },
@@ -93,12 +95,23 @@
               "src/assets"
             ],
             "styles": [
+              "@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.scss"
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "version": 2,
+            "browserTarget": "sales-order-management:build:production"
+          }
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "cca46b41-d1af-4798-bca0-a434ee2c9360"
   }
 }

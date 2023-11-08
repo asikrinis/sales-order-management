@@ -1,0 +1,9 @@
+{
+  "hosting": [
+    {
+      "target": "sales-order-management",
+      "source": ".",
+      "frameworksBackend": {}
+    }
+  ]
+}

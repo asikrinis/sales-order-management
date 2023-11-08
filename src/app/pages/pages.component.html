@@ -1,0 +1,33 @@
+<div class="main-container">
+  <mat-toolbar class="main-tool-bar">
+    <!-- <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+      <mat-icon>menu</mat-icon>
+    </button> -->
+    <div class="main-logo">
+      <a href="">
+        <img src="../../assets/images/logos/liverpool-logo.svg"
+        class="a-header__logo"
+        alt="Liverpool Logo"
+        title="Liverpool Logo">
+      </a>
+    </div>
+    <span class="example-spacer"></span>
+    <button mat-button style="margin: 0 10px 0 35px;"
+      routerLink="/orders/order-list" routerLinkActive="activate-route"  aria-label="Example icon-button with heart icon">
+      <mat-icon>list</mat-icon>
+      Ordenes
+    </button>
+    <button mat-button  aria-label="Example icon-button with share icon"
+      routerLink="/orders/order-create" routerLinkActive="activate-route">
+      <mat-icon>add</mat-icon>
+      Nueva orden
+    </button>
+    <button mat-button (click)="logout()" style="margin-left: auto;">
+      <mat-icon>logout</mat-icon>
+      Cerrar sesión
+    </button>
+  </mat-toolbar>
+  <div class="section-container">
+    <router-outlet></router-outlet>
+  </div>
+</div>

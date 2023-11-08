@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "prueba-liverpool-e0c6a": {
+      "hosting": {
+        "sales-order-management": [
+          "prueba-liverpool-e0c6a"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "prueba-liverpool-e0c6a"
+  }
+}

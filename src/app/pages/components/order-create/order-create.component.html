@@ -1,0 +1,29 @@
+<form [formGroup]="orderForm" (ngSubmit)="createOrder()">
+  <mat-form-field appearance="fill">
+    <mat-label>Nombre Cliente</mat-label>
+    <input matInput formControlName="clientName" placeholder="Nombre Cliente">
+  </mat-form-field>
+
+  <div formArrayName="items">
+    <div *ngFor="let item of items.controls; let i = index" [formGroupName]="i" >
+      <mat-form-field appearance="fill">
+        <mat-label>Producto Nombre</mat-label>
+        <input matInput formControlName="name" placeholder="Nombre Producto">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Precio</mat-label>
+        <input matInput formControlName="price" placeholder="Precio Producto">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Cantidad</mat-label>
+        <input matInput formControlName="quantity" placeholder="Cantidad Producto">
+      </mat-form-field>
+    </div>
+  </div>
+  <button mat-button (click)="addItem()">
+    <mat-icon>add</mat-icon> Agregar Producto
+  </button>
+  <button mat-button color="primary" type="submit">Crear Orden</button>
+</form>

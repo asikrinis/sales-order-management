@@ -1,0 +1,20 @@
+<div class="background">
+  <div class="login-container">
+    <div class="text-container">
+      <h1>Bienvenido a Liverpool</h1>
+      <p>
+        ¿Quieres crear una cuenta en Liverpool?
+      </p>
+      <button mat-button class="btn-register" routerLink="/register">Crear cuenta</button>
+    </div>
+    <div class="form-container">
+      <h1>Accede al Sistema de Gestión de Liverpool</h1>
+      <button mat-raised-button class="google-btn" (click)="loginWithGoogle()">
+        <mat-icon svgIcon="google"></mat-icon>
+        <span class="google-text">Entrar con cuenta de Google</span>
+      </button>
+      <h5>O Entrar con correo electrónico</h5>
+      <app-login-form (formData)="login($event)"></app-login-form>
+    </div>
+  </div>
+</div>
