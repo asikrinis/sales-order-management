@@ -13,7 +13,7 @@
               <input matInput formControlName="clientName" placeholder="Nombre Cliente">
             </mat-form-field>
           </div>
-          <div class="col-md-auto">
+          <div class="col-md-auto" *ngIf="!orderId">
             <button type="button" mat-flat-button class="mt-2" color="accent" (click)="addSelectedItems()">
               Agregar Productos
             </button>
@@ -35,10 +35,10 @@
               <mat-form-field appearance="outline" floatLabel="always" style="width: 140px;">
                 <mat-label>Cantidad</mat-label>
                 <input class="text-center" type="number" matInput formControlName="quantity">
-                <button type="button" matPrefix mat-icon-button aria-label="Clear" (click)="changeQty(i, -1)">
+                <button type="button" matPrefix mat-icon-button aria-label="Clear" [disabled]="orderId" (click)="changeQty(i, -1)">
                   <mat-icon>remove</mat-icon>
                 </button>
-                <button type="button" matSuffix mat-icon-button aria-label="Clear" (click)="changeQty(i, 1)">
+                <button type="button" matSuffix mat-icon-button aria-label="Clear" [disabled]="orderId" (click)="changeQty(i, 1)">
                   <mat-icon>add</mat-icon>
                 </button>
               </mat-form-field>
@@ -50,7 +50,7 @@
             </div>
 
             <div class="col-md-auto">
-              <button class="mt-2" mat-mini-fab color="warn" (click)="deleteItem(i)">
+              <button class="mt-2" [disabled]="orderId" mat-mini-fab color="warn" (click)="deleteItem(i)">
                 <mat-icon>delete</mat-icon>
               </button>
             </div>
@@ -77,7 +77,7 @@
             </tr>
           </tbody>
         </table>
-        <button mat-flat-button color="primary" type="button" class="custom-order-button w-100 mt-3" (click)="createOrder()" [disabled]="orderForm.invalid">
+        <button mat-flat-button *ngIf="!orderId" color="primary" type="button" class="custom-order-button w-100 mt-3" (click)="createOrder()" [disabled]="orderForm.invalid">
           <mat-icon>add</mat-icon>
           Crear Orden
         </button>

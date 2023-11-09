@@ -17,6 +17,10 @@ const routes: Routes = [
       {
         path: 'order-create',
         component: OrderCreateComponent
+      },
+      {
+        path: 'order/:orderId',
+        component: OrderCreateComponent
       }
     ]
   }

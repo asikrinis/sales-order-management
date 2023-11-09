@@ -2,9 +2,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { OrderService } from '../../services/orders.service';
 import { Item, Product } from '../../interfaces/order.interfaces';
-import { Subscription, debounceTime, take } from 'rxjs';
+import { Subscription, debounceTime, delay, switchMap, take } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { CatalogComponent } from '../catalog/catalog.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-order-create',
@@ -15,13 +16,14 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
   orderForm: FormGroup;
   products: Product[] = [];
   cargarsvg= true;
-
+  orderId = null;
   subForm = new Subscription();
 
   constructor(
     private fb: FormBuilder,
     private orderService: OrderService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public activatedRoute: ActivatedRoute
   ) {
     this.orderForm = this.fb.group({
       clientName: ['', Validators.required],
@@ -30,6 +32,21 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
       tax: this.fb.control(null, Validators.required),
       total: this.fb.control(null, Validators.required),
     });
+
+    this.activatedRoute.params.pipe(
+      delay(500),
+      switchMap(params => {
+        this.orderId = params['orderId'];
+        return this.orderService.getOrderById(params['orderId'])
+      } )
+    ).subscribe(rte => {
+      console.log(rte);
+      rte?.items.forEach(itm => {
+        this.addItem(itm);
+      })
+      this.orderForm.patchValue(rte || {});
+      this.orderForm.disable();
+    })
   }
 
   ngOnInit(): void {
@@ -55,7 +72,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
     this.subForm.unsubscribe();
   }
 
-  addItem(product: Product) {
+  addItem(product: Product | Item) {
     const itemForm = this.fb.group({
       itemId: [product.itemId, Validators.required],
       itemName: [product.itemName, Validators.required],
