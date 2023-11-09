@@ -16,6 +16,7 @@
 .section-container {
   height: calc(100vh - 96px);
   padding: 16px;
+  overflow: auto;
 }
 
 .activate-route {

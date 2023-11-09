@@ -1,29 +1,90 @@
-<form [formGroup]="orderForm" (ngSubmit)="createOrder()">
-  <mat-form-field appearance="fill">
-    <mat-label>Nombre Cliente</mat-label>
-    <input matInput formControlName="clientName" placeholder="Nombre Cliente">
-  </mat-form-field>
+<div class="loader" *ngIf="!cargarsvg">
+</div>
 
-  <div formArrayName="items">
-    <div *ngFor="let item of items.controls; let i = index" [formGroupName]="i" >
-      <mat-form-field appearance="fill">
-        <mat-label>Producto Nombre</mat-label>
-        <input matInput formControlName="name" placeholder="Nombre Producto">
-      </mat-form-field>
+<div *ngIf="cargarsvg">
+  <form [formGroup]="orderForm" >
 
-      <mat-form-field appearance="fill">
-        <mat-label>Precio</mat-label>
-        <input matInput formControlName="price" placeholder="Precio Producto">
-      </mat-form-field>
+    <div class="row">
+      <div class="col-md-9">
+        <div class="row justify-content-between">
+          <div class="col-md-8">
+            <mat-form-field class="w-100" appearance="outline">
+              <mat-label>Nombre Cliente</mat-label>
+              <input matInput formControlName="clientName" placeholder="Nombre Cliente">
+            </mat-form-field>
+          </div>
+          <div class="col-md-auto">
+            <button type="button" mat-flat-button class="mt-2" color="accent" (click)="addSelectedItems()">
+              Agregar Productos
+            </button>
+          </div>
+        </div>
 
-      <mat-form-field appearance="fill">
-        <mat-label>Cantidad</mat-label>
-        <input matInput formControlName="quantity" placeholder="Cantidad Producto">
-      </mat-form-field>
+
+        <ng-container formArrayName="items">
+          <div class="row align-items-start" *ngFor="let item of items.controls; let i = index" [formGroupName]="i">
+            <div class="col-md-auto">
+              <img [src]="getImage(item.get('itemId')?.value)" alt="">
+            </div>
+
+            <div class="col-md-4">
+              <h3 class="mb-0">{{ item.get('itemName')?.value }}</h3>
+            </div>
+
+            <div class="col-md-auto">
+              <mat-form-field appearance="outline" floatLabel="always" style="width: 140px;">
+                <mat-label>Cantidad</mat-label>
+                <input class="text-center" type="number" matInput formControlName="quantity">
+                <button type="button" matPrefix mat-icon-button aria-label="Clear" (click)="changeQty(i, -1)">
+                  <mat-icon>remove</mat-icon>
+                </button>
+                <button type="button" matSuffix mat-icon-button aria-label="Clear" (click)="changeQty(i, 1)">
+                  <mat-icon>add</mat-icon>
+                </button>
+              </mat-form-field>
+            </div>
+
+            <div class="col-md-3">
+              <h3 class="mb-1" >Precio: {{ item.get('price')?.value | currency}}</h3>
+              <h3 class="mb-1" >Subtotal: {{ (item.get('price')?.value || 0) * (item.get('quantity')?.value || 0) | currency}}</h3>
+            </div>
+
+            <div class="col-md-auto">
+              <button class="mt-2" mat-mini-fab color="warn" (click)="deleteItem(i)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+
+          </div>
+        </ng-container>
+      </div>
+
+      <div class="col-md-3 mt-md-5 mt-0">
+        <h2>Resumen de la orden</h2>
+        <table class="w-100">
+          <tbody>
+            <tr>
+              <td>Subtotal:</td>
+              <td class="text-end">{{ orderForm.get('subtotal')?.value | currency }}</td>
+            </tr>
+            <tr>
+              <td>IVA (15%):</td>
+              <td class="text-end">{{ orderForm.get('tax')?.value | currency }}</td>
+            </tr>
+            <tr>
+              <td>Total:</td>
+              <td class="text-end">{{ orderForm.get('total')?.value | currency }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <button mat-flat-button color="primary" type="button" class="custom-order-button w-100 mt-3" (click)="createOrder()" [disabled]="orderForm.invalid">
+          <mat-icon>add</mat-icon>
+          Crear Orden
+        </button>
+      </div>
+
     </div>
-  </div>
-  <button mat-button (click)="addItem()">
-    <mat-icon>add</mat-icon> Agregar Producto
-  </button>
-  <button mat-button color="primary" type="submit">Crear Orden</button>
-</form>
+
+  </form>
+
+</div>

@@ -24,6 +24,12 @@ export class OrderListComponent implements OnInit {
     finalDate: null
   };
 
+  searchTypeCat = [
+    {value:null, name: 'Ninguna' },
+    {value:'creationDate', name: 'Por fecha de creación' },
+    {value:'cancellationDate',name: 'Por fecha de cancelación' },
+  ]
+
   displayedColumns: string[] =['id', 'clientName', 'creationDate', 'total', 'actions'];
   dataSource = new MatTableDataSource<Order>([]);
   constructor(
@@ -52,20 +58,24 @@ export class OrderListComponent implements OnInit {
   }
 
   applyDateFilter() {
-    if (this.form.initialDate && this.form.finalDate && this.form.initialDate > this.form.finalDate) {
-      this.form.initialDate = null;
-    } else {
-      const filteredOrders = this.dataSource.data.filter((order: Order) => {
-        const creationDate = new Date(order.creationDate);
-        return (!this.form.initialDate || creationDate >= this.form.initialDate) &&
-               (!this.form.finalDate || creationDate <= this.form.finalDate);
-      });
-      this.dataSource.data = filteredOrders;
-    }
-  }
+    // const {searchType, initialDate, finalDate} = this.form;
+    // if (!searchType) {
+    //   this.form.initialDate = null;
+    //   this.form.finalDate = null;
+    // }
+    console.log(this.form);
 
-  editOrder(order: Order) {
-    this.router.navigate(['/edit-order', order.orderId]);
+    this.getOrders();
+    // if (this.form.initialDate && this.form.finalDate && this.form.initialDate > this.form.finalDate) {
+    //   this.form.initialDate = null;
+    // } else {
+    //   const filteredOrders = this.dataSource.data.filter((order: Order) => {
+    //     const creationDate = new Date(order.creationDate);
+    //     return (!this.form.initialDate || creationDate >= this.form.initialDate) &&
+    //            (!this.form.finalDate || creationDate <= this.form.finalDate);
+    //   });
+    //   this.dataSource.data = filteredOrders;
+    // }
   }
 
   deleteOrder(order: Order) {
@@ -77,8 +87,8 @@ export class OrderListComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.orderService.cancelOrder(order.orderId).subscribe((result) => {
-          this.getOrders();
-        }) ;
+          this.dataSource.data = this.dataSource.data.filter(odr => odr.orderId !== order.orderId);
+        });
       }
     });
   }

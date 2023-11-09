@@ -1,0 +1,18 @@
+<h1 mat-dialog-title>Agregar productos</h1>
+<div mat-dialog-content>
+  <div *ngFor="let product of products" class="product-card">
+    <mat-checkbox (change)="onProductSelect(product, $event.checked)">
+      <div class="product-info">
+        <img [src]="product.image" alt="{{product.itemName}}">
+        <div class="product-details">
+          <h3>{{ product.itemName }}</h3>
+          <p>{{ product.price | currency}}</p>
+        </div>
+      </div>
+    </mat-checkbox>
+  </div>
+</div>
+<div mat-dialog-actions class="justify-content-end">
+  <button mat-flat-button class="me-3" color="warn"  (click)="addSelectedItems()">Cancelar</button>
+  <button mat-flat-button class="custom-order-button" (click)="addSelectedItems()">Agregar Productos</button>
+</div>

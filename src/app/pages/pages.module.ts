@@ -16,10 +16,12 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import { MatStepperModule } from '@angular/material/stepper';
+import { MatSelectModule } from '@angular/material/select';
 
 import { OrderCreateComponent } from './components/order-create/order-create.component';
 import { OrderListComponent } from './components/order-list/order-list.component';
 import { PagesComponent } from './pages.component';
+import { CatalogComponent } from './components/catalog/catalog.component';
 
 
 @NgModule({
@@ -27,7 +29,8 @@ import { PagesComponent } from './pages.component';
     OrderCreateComponent,
     OrderListComponent,
     ConfirmationDialogComponent,
-    PagesComponent
+    PagesComponent,
+    CatalogComponent
   ],
   imports: [
     CommonModule,
@@ -45,7 +48,8 @@ import { PagesComponent } from './pages.component';
     MatToolbarModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatStepperModule
+    MatStepperModule,
+    MatSelectModule
   ],
   providers: [
     MatDatepickerModule,

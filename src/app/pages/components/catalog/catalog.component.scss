@@ -1,0 +1,23 @@
+.product-card {
+  display: flex;
+  align-items: center;
+}
+
+.product-info {
+  display: flex;
+  align-items: center;
+}
+
+.product-details {
+  margin-left: 15px;
+}
+
+img {
+  width: 50px;
+  height: auto;
+}
+
+.custom-order-button:not([disabled]) {
+  background-color: #e10098;
+  color: white;
+}
