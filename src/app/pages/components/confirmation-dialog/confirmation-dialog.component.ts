@@ -13,8 +13,16 @@ export class ConfirmationDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: { message: string }
   ) {}
 
-  onConfirm(): void {
-    this.dialogRef.close(true);
+  onConfirm(): boolean {
+    // Close the dialog and confirm the action
+    try {
+      if (this.dialogRef) {
+        this.dialogRef.close(true);
+      }
+    } catch (error) {
+      console.error('Error occurred while closing the dialog:', error);
+    }
+    return true;
   }
 
   onDismiss(): void {
