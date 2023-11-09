@@ -5,8 +5,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ConfirmationDialogComponent } from '../../components/confirmation-dialog/confirmation-dialog.component';
-import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-order-list',
@@ -25,27 +23,29 @@ export class OrderListComponent implements OnInit {
   };
 
   searchTypeCat = [
-    {value:null, name: 'Ninguna' },
-    {value:'creationDate', name: 'Por fecha de creación' },
-    {value:'cancellationDate',name: 'Por fecha de cancelación' },
-  ]
+    { value: null, name: 'Ninguna' },
+    { value: 'creationDate', name: 'Por fecha de creación' },
+    { value: 'cancellationDate', name: 'Por fecha de cancelación' },
+  ];
 
-  displayedColumns: string[] =['id', 'clientName', 'creationDate', 'total', 'actions'];
+  displayedColumns: string[] = ['id', 'clientName','status', 'creationDate', 'total', 'actions'];
   dataSource = new MatTableDataSource<Order>([]);
+
   constructor(
     private orderService: OrderService,
     private router: Router,
-    public dialog: MatDialog){}
+    public dialog: MatDialog
+  ) {}
+
   ngOnInit(): void {
     this.getOrders();
   }
 
-  getOrders(){
+  getOrders() {
     this.orderService.getOrders(this.form).subscribe((orders) => {
       this.dataSource.data = orders;
-    })
+    });
   }
-
 
   applyFilter(event: Event) {
     const inputElement = event.target as HTMLInputElement;
@@ -58,36 +58,28 @@ export class OrderListComponent implements OnInit {
   }
 
   applyDateFilter() {
-    // const {searchType, initialDate, finalDate} = this.form;
-    // if (!searchType) {
-    //   this.form.initialDate = null;
-    //   this.form.finalDate = null;
-    // }
-    console.log(this.form);
-
     this.getOrders();
-    // if (this.form.initialDate && this.form.finalDate && this.form.initialDate > this.form.finalDate) {
-    //   this.form.initialDate = null;
-    // } else {
-    //   const filteredOrders = this.dataSource.data.filter((order: Order) => {
-    //     const creationDate = new Date(order.creationDate);
-    //     return (!this.form.initialDate || creationDate >= this.form.initialDate) &&
-    //            (!this.form.finalDate || creationDate <= this.form.finalDate);
-    //   });
-    //   this.dataSource.data = filteredOrders;
-    // }
   }
 
-  deleteOrder(order: Order) {
+  viewOrder(orderId: string | number) {
+    this.router.navigate(['/orders/order/', orderId]);
+  }
+
+  cancelOrder(order: Order) {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '250px',
-      data: { message: "¿Estás seguro de que quieres borrar esta orden?" }
+      data: { message: "¿Estás seguro de que quieres cancelar esta orden?" }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.orderService.cancelOrder(order.orderId).subscribe((result) => {
-          this.dataSource.data = this.dataSource.data.filter(odr => odr.orderId !== order.orderId);
+        this.orderService.cancelOrder(order.orderId).subscribe(() => {
+          const orderToUpdate = this.dataSource.data.find(o => o.orderId === order.orderId);
+          if (orderToUpdate) {
+            orderToUpdate.isCancelled = true;
+            orderToUpdate.cancellationDate = new Date().toISOString();
+            this.dataSource.data = [...this.dataSource.data];
+          }
         });
       }
     });

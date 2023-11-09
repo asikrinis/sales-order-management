@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Agregar productos</h1>
+<h1 mat-dialog-title class="modal-title-style">Agregar productos</h1>
 <div mat-dialog-content>
   <div *ngFor="let product of products" class="product-card">
     <mat-checkbox (change)="onProductSelect(product, $event.checked)">

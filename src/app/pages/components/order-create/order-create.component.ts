@@ -32,21 +32,27 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
       tax: this.fb.control(null, Validators.required),
       total: this.fb.control(null, Validators.required),
     });
-
     this.activatedRoute.params.pipe(
       delay(500),
       switchMap(params => {
         this.orderId = params['orderId'];
-        return this.orderService.getOrderById(params['orderId'])
-      } )
+        return this.orderService.getOrderById(params['orderId']);
+      })
     ).subscribe(rte => {
       console.log(rte);
       rte?.items.forEach(itm => {
         this.addItem(itm);
-      })
+      });
       this.orderForm.patchValue(rte || {});
-      this.orderForm.disable();
-    })
+      if(this.orderId){
+        this.orderForm.get('clientName')!.disable();
+      }
+      this.activatedRoute.queryParams.subscribe(queryParams => {
+        if (Object.keys(queryParams).length) {
+          this.orderForm.disable();
+        }
+      });
+    });
   }
 
   ngOnInit(): void {

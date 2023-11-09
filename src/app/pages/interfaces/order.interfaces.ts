@@ -14,6 +14,7 @@ export interface Order {
   subtotal: number;
   tax: number;
   total: number;
+  isCancelled: boolean;
 }
 
 export interface PayloadCreateOrder {

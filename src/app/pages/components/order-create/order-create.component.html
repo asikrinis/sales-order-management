@@ -3,7 +3,6 @@
 
 <div *ngIf="cargarsvg">
   <form [formGroup]="orderForm" >
-
     <div class="row">
       <div class="col-md-9">
         <div class="row justify-content-between">
@@ -14,12 +13,11 @@
             </mat-form-field>
           </div>
           <div class="col-md-auto" *ngIf="!orderId">
-            <button type="button" mat-flat-button class="mt-2" color="accent" (click)="addSelectedItems()">
+            <button type="button" mat-flat-button class="mt-2" class="button-style" (click)="addSelectedItems()">
               Agregar Productos
             </button>
           </div>
         </div>
-
 
         <ng-container formArrayName="items">
           <div class="row align-items-start" *ngFor="let item of items.controls; let i = index" [formGroupName]="i">
