@@ -13,6 +13,15 @@ export class PagesComponent implements OnInit {
 
   ngOnInit() { }
 
+  /**
+   * Logs out the user.
+   *
+   * This method calls the `logout` method of the `AuthService` class to log out the user.
+   * If the logout is successful, it navigates to the root page using the `navigate` method of the `Router` class.
+   * If the logout fails, an error message is logged to the console.
+   *
+   * @returns {void}
+   */
   logout() {
     this.authService
       .logout()
